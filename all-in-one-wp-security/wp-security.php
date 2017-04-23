@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: All In One WP Security
+Plugin Name: All In One WP Security [TESTING BUILD - NOT FOR DISTRIBUTION]
 Version: 4.2.7
 Plugin URI: https://www.tipsandtricks-hq.com/wordpress-security-and-firewall-plugin
 Author: Tips and Tricks HQ, Peter, Ruhul, Ivy

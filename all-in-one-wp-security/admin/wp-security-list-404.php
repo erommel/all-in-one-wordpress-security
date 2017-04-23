@@ -211,6 +211,11 @@ class AIOWPSecurity_List_404 extends AIOWPSecurity_List_Table {
             $aio_wp_security->configs->set_value('aiowps_banned_ip_addresses',$banned_ip_data);
             $aio_wp_security->configs->save_config(); //Save the configuration
 
+            //Add IP into permanent block table
+            foreach ($list as $ip) {
+                AIOWPSecurity_Blocking::add_ip_to_block_list($ip,'Manually blacklisted');
+            }
+            
             $write_result = AIOWPSecurity_Utility_Htaccess::write_to_htaccess(); //now let's write to the .htaccess file
             if ( $write_result ) {
                 AIOWPSecurity_Admin_Menu::show_msg_updated_st(__('The selected IP addresses have been added to the blacklist and will be permanently blocked!', 'WPS'));

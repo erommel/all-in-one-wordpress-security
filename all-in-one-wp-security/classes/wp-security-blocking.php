@@ -37,10 +37,10 @@ class AIOWPSecurity_Blocking
      * @param $ip_address
      * @return bool
      */
-    static function is_ip_blocked($ip_address)
+    static function is_ip_blocked($ip_address,$additional_condition='')
     {
         global $wpdb;
-        $blocked_record = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.AIOWPSEC_TBL_PERM_BLOCK.' WHERE blocked_ip=%s', $ip_address));
+        $blocked_record = $wpdb->get_row($wpdb->prepare('SELECT * FROM '.AIOWPSEC_TBL_PERM_BLOCK.' WHERE blocked_ip=%s'.$additional_condition, $ip_address));
         if(empty($blocked_record)){
             return false;
         }else{
@@ -90,10 +90,13 @@ class AIOWPSecurity_Blocking
      * Will check the current visitor IP against the blocked table
      * If IP present will block the visitor from viewing the site
      */
-    static function check_visitor_ip_and_perform_blocking()
+    static function check_visitor_ip_and_perform_blocking($condition='')
     {
         global $aio_wp_security, $wpdb;
         $visitor_ip = AIOWPSecurity_Utility_IP::get_user_ip_address();
+        if ($condition=='manual') {
+            $condition=' AND block_reason="Manually blacklisted"';
+        }
         $ip_type = WP_Http::is_ip_address($visitor_ip);
         if(empty($ip_type)){
             $aio_wp_security->debug_logger->log_debug("do_general_ip_blocking_tasks: ".$visitor_ip." is not a valid IP!",4);
@@ -101,7 +104,7 @@ class AIOWPSecurity_Blocking
         }
 
         //Check if this IP address is in the block list
-        $blocked = AIOWPSecurity_Blocking::is_ip_blocked($visitor_ip);
+        $blocked = AIOWPSecurity_Blocking::is_ip_blocked($visitor_ip,$condition);
         //TODO - future feature: add blocking whitelist and check
 
         if(empty($blocked)){

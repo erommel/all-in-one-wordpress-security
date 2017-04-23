@@ -185,6 +185,7 @@ None
 == Changelog ==
 
 = 4.2.7 =
+- Testing: Manually blacklisted IPs from 404 Detection page are now also blocked via Permanent Block List table. This is to support servers that are not using .htaccess (like nginx).
 - The PHPWhois library updated to their latest version to include a security patch.
 
 = 4.2.6 =

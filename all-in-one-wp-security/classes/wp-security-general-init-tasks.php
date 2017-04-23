@@ -12,6 +12,9 @@ class AIOWPSecurity_General_Init_Tasks
 
         add_action( 'permalink_structure_changed', array(&$this, 'refresh_firewall_rules' ), 10, 2);
 
+        // Check and block manually blacklisted IPs if needed
+        AIOWPSecurity_Blocking::check_visitor_ip_and_perform_blocking('manual');
+        
         if ($aio_wp_security->configs->get_value('aiowps_enable_autoblock_spam_ip') == '1') {
             AIOWPSecurity_Blocking::check_visitor_ip_and_perform_blocking();
 
